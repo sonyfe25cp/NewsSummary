@@ -14,7 +14,7 @@ import source.Sentence;
  */
 public class SurfaceFeature implements FeatureCompute {
 
-	public float[] compute(Sentence sentence){
+	public double[] compute(Sentence sentence){
 		
 		int positionId = sentence.getSentenceId(); 
 		int total = sentence.getTotal();
@@ -28,7 +28,7 @@ public class SurfaceFeature implements FeatureCompute {
 		
 		int quote = 0; //feature 4;
 		
-		float[] surface ={position, docFirst, paraFirst, quote};
+		double[] surface ={position, docFirst, paraFirst, quote};
 		
 		return surface;
 	}
