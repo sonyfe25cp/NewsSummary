@@ -75,7 +75,7 @@ public class TokenizerUtils {
 	public static void main(String[] args) {
 		Sentence sentence = new Sentence();
 //		sentence.setSentenceContent("The intuition with respect to the importance of a sentence stems from the following observations.");
-		sentence.setSentenceContent("I want to buy a iphone");
+		sentence.setSentenceContent("I want to buy a iphone with good luck");
 //		tokenizer(sentence.getSentenceContent());
 		tagging(sentence.getSentenceContent());
 	}

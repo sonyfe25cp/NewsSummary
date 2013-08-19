@@ -20,15 +20,18 @@ public class SurfaceFeature implements FeatureCompute {
 		int total = sentence.getTotal();
 		
 		float position = (float)positionId / total;//feature 1
+		
 		int docFirst = 0;
 		if(positionId ==1 ){
 			docFirst = 1; //feature 2
 		}
 		int paraFirst = 0; //feature 3;
 		
-		int quote = 0; //feature 4;
+		int length = sentence.getSentenceContent().length(); //feature 4
 		
-		double[] surface ={position, docFirst, paraFirst, quote};
+		int quote = 0; //feature 5;
+		
+		double[] surface ={position, docFirst, paraFirst, length, quote};
 		
 		return surface;
 	}

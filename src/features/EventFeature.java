@@ -8,7 +8,7 @@ public class EventFeature implements FeatureCompute{
 	public double[] compute(Sentence sentence) {
 
 		
-		return null;
+		return new double[0];
 	}
 
 }

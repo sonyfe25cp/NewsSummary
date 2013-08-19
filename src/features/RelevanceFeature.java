@@ -2,13 +2,13 @@ package features;
 
 import java.util.HashSet;
 
-import mapper.SentenceMapper;
+import service.SentenceService;
 import source.Sentence;
 import utils.TokenizerUtils;
 
 public class RelevanceFeature implements FeatureCompute{
 
-	private SentenceMapper sentenceMapper;
+	private SentenceService sentenceService;
 	
 	@Override
 	public double[] compute(Sentence sentence) {
@@ -17,7 +17,7 @@ public class RelevanceFeature implements FeatureCompute{
 		if(sentenceId == 1){//feature 1
 			firstRelDoc =1;
 		}else{
-			Sentence firstSentence = sentenceMapper.getFirstSentence();
+			Sentence firstSentence = sentenceService.getFirstSenceOfDoc(sentence.getDocName());
 			firstRelDoc = computeRel(sentence, firstSentence);
 		}
 		

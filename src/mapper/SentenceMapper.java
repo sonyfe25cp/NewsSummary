@@ -11,7 +11,7 @@ public interface SentenceMapper {
 	
 	public Sentence getSentenceById(int id);
 	
-	public Sentence getSentenceBySentenceIdAndDocName(@Param("sentenceId") int sentenceId, String docName);
+	public Sentence getSentenceBySentenceIdAndDocName(@Param("sentenceId") int sentenceId, @Param("docName") String docName);
 	
 	public List<Sentence> getSentencesByDocumentName(String docName);
 	

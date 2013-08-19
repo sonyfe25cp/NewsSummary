@@ -11,6 +11,19 @@ public class Sentence {
 	private String isSummary;//是否是摘要
 	private int total;//该doc内的句子数量
 	
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("sentenceId:"+sentenceId);
+		sb.append("\n");
+		sb.append("docName:"+docName);
+		sb.append("\n");
+		sb.append("content:"+sentenceContent);
+		sb.append("\n");
+		sb.append("isSummary:"+isSummary);
+		sb.append("\n");
+		return sb.toString();
+	}
+	
 	
 	public int getId() {
 		return id;
