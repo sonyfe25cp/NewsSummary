@@ -16,5 +16,7 @@ public interface SentenceMapper {
 	public List<Sentence> getSentencesByDocumentName(String docName);
 	
 	public List<Sentence> getSentencesByEventName(String eventName);
+	
+	public List<Sentence> getAllSentences();
 
 }

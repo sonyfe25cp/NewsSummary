@@ -9,4 +9,8 @@
 	<select id="getSentenceBySentenceIdAndDocName" resultType="source.Sentence">
 		select id, sentence_id as sentenceId, sentence_content as sentenceContent , docName, eventName, isSummary , total from sentence where sentence_id = #{sentenceId} and docName =#{docName}
 	</select>
+	
+	<select id="getAllSentences" resultType="source.Sentence">
+		select id, sentence_id as sentenceId, sentence_content as sentenceContent , docName, eventName, isSummary , total from sentence
+	</select>
 </mapper>

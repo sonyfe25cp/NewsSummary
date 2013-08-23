@@ -10,6 +10,10 @@ import features.FeatureCompute;
 import features.RelevanceFeature;
 import features.SurfaceFeature;
 
+/**
+ * @author coder
+ *
+ */
 public class SentenceFeature {
 
 	public double[] compute(Sentence sentence) {
@@ -19,7 +23,12 @@ public class SentenceFeature {
 		featureComputer.add(new RelevanceFeature());
 		featureComputer.add(new SurfaceFeature());
 		
-		double feature[] = new double[0];
+		double feature[] = null;
+		if(sentence.getIsSummary().equals("true")){ //特征第一位是 label
+			feature = new double[]{1};
+		}else{
+			feature = new double[]{0};
+		}
 		
 		for(FeatureCompute compute : featureComputer){
 			double[] featureTmp = compute.compute(sentence);
@@ -27,6 +36,22 @@ public class SentenceFeature {
 		}
 		return feature;
 	}
+	
+	public String toString(Sentence sentence){
+		double[] vector = compute(sentence);
+		String line = "";
+		for(int i = 0; i< vector.length; i ++){
+			String tmp ="";
+			if(i == 0){
+				tmp = vector[0] +" ";
+			}else{
+				tmp = i + ":"+vector[i]+" ";
+			}
+			line += tmp;
+		}
+		return line;
+	}
+	
 	private double[] combine(double[] array1, double[] array2){
 		double[] com = new double[array1.length+array2.length];
 		for(int i = 0 ; i < array1.length; i ++){
@@ -37,5 +62,4 @@ public class SentenceFeature {
 		}
 		return com;
 	}
-
 }

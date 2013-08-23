@@ -8,7 +8,7 @@ import utils.TokenizerUtils;
 
 public class RelevanceFeature implements FeatureCompute{
 
-	private SentenceService sentenceService;
+	private SentenceService sentenceService = new SentenceService();
 	
 	@Override
 	public double[] compute(Sentence sentence) {
@@ -18,6 +18,7 @@ public class RelevanceFeature implements FeatureCompute{
 			firstRelDoc =1;
 		}else{
 			Sentence firstSentence = sentenceService.getFirstSenceOfDoc(sentence.getDocName());
+			
 			firstRelDoc = computeRel(sentence, firstSentence);
 		}
 		
@@ -72,7 +73,7 @@ public class RelevanceFeature implements FeatureCompute{
 	}
 
 	private int[] computeVector(HashSet<String> set, String[] array){
-		int[] vector = new int[array.length];
+		int[] vector = new int[set.size()];
 		int i = 0;
 		for(String token : set){
 			if(contains(array, token)){

@@ -23,11 +23,7 @@ public class TokenizerUtils {
 			Tokenizer tokenizer = new TokenizerME(model);
 			tokens = tokenizer.tokenize(content);
 			
-			for(String token : tokens){
-				System.out.println(token);
-			}
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
