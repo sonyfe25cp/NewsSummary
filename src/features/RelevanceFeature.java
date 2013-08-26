@@ -8,7 +8,7 @@ import utils.TokenizerUtils;
 
 public class RelevanceFeature implements FeatureCompute{
 
-	private SentenceService sentenceService = new SentenceService();
+	private SentenceService sentenceService;
 	
 	@Override
 	public double[] compute(Sentence sentence) {
@@ -98,6 +98,14 @@ public class RelevanceFeature implements FeatureCompute{
 	private double computePageRank(Sentence sentence){
 		
 		return 0;
+	}
+
+	public SentenceService getSentenceService() {
+		return sentenceService;
+	}
+
+	public void setSentenceService(SentenceService sentenceService) {
+		this.sentenceService = sentenceService;
 	}
 
 }

@@ -16,11 +16,15 @@ import features.SurfaceFeature;
  */
 public class SentenceFeature {
 
+	private SentenceService sentenceService;
+	
 	public double[] compute(Sentence sentence) {
 		List<FeatureCompute> featureComputer = new ArrayList<FeatureCompute>();
 		featureComputer.add(new ContentFeature());
 		featureComputer.add(new EventFeature());
-		featureComputer.add(new RelevanceFeature());
+		RelevanceFeature rf = new RelevanceFeature();
+		rf.setSentenceService(sentenceService);
+		featureComputer.add(rf);
 		featureComputer.add(new SurfaceFeature());
 		
 		double feature[] = null;
@@ -61,5 +65,13 @@ public class SentenceFeature {
 			com[i+array1.length] = array2[i];
 		}
 		return com;
+	}
+
+	public SentenceService getSentenceService() {
+		return sentenceService;
+	}
+
+	public void setSentenceService(SentenceService sentenceService) {
+		this.sentenceService = sentenceService;
 	}
 }
