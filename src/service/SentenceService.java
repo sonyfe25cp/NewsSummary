@@ -3,12 +3,17 @@ package service;
 import java.util.List;
 
 import mapper.SentenceMapper;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import source.Sentence;
 
-public class SentenceService extends Service{
+@Service
+public class SentenceService{
 
-
-	private SentenceMapper sentenceMapper = session.getMapper(SentenceMapper.class) ;
+	@Autowired
+	private SentenceMapper sentenceMapper;
 	
 	public Sentence getFirstSenceOfDoc(String docName){
 		Sentence s = sentenceMapper.getSentenceBySentenceIdAndDocName(1, docName);

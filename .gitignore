@@ -1,7 +1,9 @@
 *.class
+.classpath
 bin/
 .settings/
 train.data.model
+WebContent/WEB-INF/classes/
 
 # Package Files #
 *.war
