@@ -1,5 +1,7 @@
 *.class
+bin/
 .settings/
+train.data.model
 
 # Package Files #
 *.war

@@ -5,9 +5,8 @@ import source.Sentence;
 public class EventFeature implements FeatureCompute{
 
 	@Override
-	public double[] compute(Sentence sentence) {
-
-		
+	public double[] compute(Object d) {
+		// TODO Auto-generated method stub
 		return new double[0];
 	}
 

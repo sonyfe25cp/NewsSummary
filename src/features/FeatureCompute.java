@@ -1,9 +1,8 @@
 package features;
 
-import source.Sentence;
 
-public interface FeatureCompute {
+public interface FeatureCompute<D> {
 
-	public double[] compute(Sentence sentence);
+	public double[] compute(D d);
 	
 }

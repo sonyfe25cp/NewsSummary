@@ -9,9 +9,9 @@ import utils.TokenizerUtils;
 public class RelevanceFeature implements FeatureCompute{
 
 	private SentenceService sentenceService;
-	
 	@Override
-	public double[] compute(Sentence sentence) {
+	public double[] compute(Object d) {
+		Sentence sentence = (Sentence) d;
 		double firstRelDoc = 0;
 		int sentenceId = sentence.getSentenceId();
 		if(sentenceId == 1){//feature 1
@@ -107,5 +107,7 @@ public class RelevanceFeature implements FeatureCompute{
 	public void setSentenceService(SentenceService sentenceService) {
 		this.sentenceService = sentenceService;
 	}
+
+	
 
 }
