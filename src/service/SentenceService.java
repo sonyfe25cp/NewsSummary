@@ -3,11 +3,11 @@ package service;
 import java.util.List;
 
 import mapper.SentenceMapper;
+import model.Sentence;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import source.Sentence;
 
 @Service
 public class SentenceService{

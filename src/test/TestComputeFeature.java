@@ -1,8 +1,8 @@
 package test;
 
+import model.Sentence;
 import service.SentenceFeature;
 import service.SentenceService;
-import source.Sentence;
 
 public class TestComputeFeature {
 

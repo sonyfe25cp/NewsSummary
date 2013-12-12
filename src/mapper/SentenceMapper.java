@@ -2,9 +2,10 @@ package mapper;
 
 import java.util.List;
 
+import model.Sentence;
+
 import org.apache.ibatis.annotations.Param;
 
-import source.Sentence;
 
 public interface SentenceMapper {
 

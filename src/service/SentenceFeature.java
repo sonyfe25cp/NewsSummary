@@ -3,7 +3,8 @@ package service;
 import java.util.ArrayList;
 import java.util.List;
 
-import source.Sentence;
+import model.Sentence;
+
 import features.ContentFeature;
 import features.EventFeature;
 import features.FeatureCompute;

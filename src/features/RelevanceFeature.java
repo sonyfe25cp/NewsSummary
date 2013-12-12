@@ -2,8 +2,9 @@ package features;
 
 import java.util.HashSet;
 
+import model.Sentence;
+
 import service.SentenceService;
-import source.Sentence;
 import utils.TokenizerUtils;
 
 public class RelevanceFeature implements FeatureCompute{

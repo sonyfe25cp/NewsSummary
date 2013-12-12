@@ -38,6 +38,9 @@
 		<property name="password">
 			<value>123iop</value>
 		</property>
+		<property name="maxIdleTime">
+			<value>20</value>
+		</property>
 	</bean>
 
 <context:property-placeholder location="classpath*:gossip-server.properties" />

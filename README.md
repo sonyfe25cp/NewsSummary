@@ -10,3 +10,17 @@ an auto summary tool for social news.
 ps:
 	source字段为请求服务者的返回地址，将直接根据其地址返回POST请求,如：http://10.1.0.127:8080/summaryReceiver, post data: summary={json}
 	flag字段为是否计算出summary的标志，若为true，则有内容；若为false，则为无返回
+
+自用方法：
+	增量LSA+Aging theory的多文档摘要方法
+
+对比方法：
+1.centroid方法 MEAD
+	Centroid-based summarization of multiple document
+	http://www.summarization.com/mead/
+	
+2. UNIS
+	http://yatsko.zohosites.com/universal-summarizer-unis.html
+
+3. ETS
+	

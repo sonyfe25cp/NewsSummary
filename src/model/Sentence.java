@@ -1,15 +1,22 @@
-package source;
+package model;
 
 public class Sentence {
 
 
 	private int id;
 	private int sentenceId;//同一个doc内句子id
+	
+	private int locationInBody;//该句子在doc中的位置
+	private int locationInPara;//该句子在本段中的位置
+	
 	private String sentenceContent;//句子内容
-	private String docName;//doc名
-	private String eventName;//事件名
 	private String isSummary;//是否是摘要
 	private int total;//该doc内的句子数量
+
+	
+	private String docName;//doc名
+	private String eventName;//事件名
+
 	
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
@@ -66,6 +73,18 @@ public class Sentence {
 	}
 	public void setTotal(int total) {
 		this.total = total;
+	}
+	public int getLocationInBody() {
+		return locationInBody;
+	}
+	public void setLocationInBody(int locationInBody) {
+		this.locationInBody = locationInBody;
+	}
+	public int getLocationInPara() {
+		return locationInPara;
+	}
+	public void setLocationInPara(int locationInPara) {
+		this.locationInPara = locationInPara;
 	}
 	
 }

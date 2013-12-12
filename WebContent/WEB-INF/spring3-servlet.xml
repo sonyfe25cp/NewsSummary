@@ -21,6 +21,30 @@
 	<context:component-scan base-package="action" />
     <context:component-scan base-package="service" />
 
+	<bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/ftl/" /> <!--配置 模板加载路径 -->
+		<property name="defaultEncoding" value="UTF-8"/>
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="template_update_delay">0</prop>
+				<prop key="locale">zh_CN</prop>
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+				<prop key="date_format">yyyy-MM-dd</prop>
+				<prop key="number_format">#.##</prop>
+				<prop key="auto_import">spring.ftl as spring</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="freeMarker"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="cache" value="true" />
+		<property name="prefix" value="" /> <!-- 上面配置了加载路径，这边不用配置前缀了 -->
+		<property name="suffix" value=".ftl" />
+		<property name="contentType" value="text/html;charset=UTF-8" />   <!-- 处理乱码 -->
+	</bean>
+
 	<!-- InternalResourceViewResolver默认的就是JstlView所以这里就不用配置viewClass了 -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -29,28 +53,15 @@
 	</bean>
 
 	<!-- Handler Mapping -->
-	
-	
-	<bean
-		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
-		
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<!-- 配置一下对json数据的转换 -->
 		<property name="messageConverters">
-		    
 			<list>
 				<bean
 					class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"></bean>
 			</list>
 		</property>
 	</bean>
-	
-	
-    <!-- 上传拦截，如最大上传值及最小上传值 
-	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="100000000" />
-	</bean>
-	-->
 </beans>

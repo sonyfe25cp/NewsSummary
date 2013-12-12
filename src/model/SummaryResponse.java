@@ -1,4 +1,4 @@
-package source;
+package model;
 /**
  * 用于接收summary服务的json
  * @author coder

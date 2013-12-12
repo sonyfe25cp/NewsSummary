@@ -1,6 +1,6 @@
 package features;
 
-import source.Sentence;
+import model.Sentence;
 
 /**
  * Position

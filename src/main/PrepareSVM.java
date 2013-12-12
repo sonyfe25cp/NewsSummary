@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Sentence;
+
 import service.SentenceFeature;
 import service.SentenceService;
-import source.Sentence;
 
 /**
  * @author ChenJie
