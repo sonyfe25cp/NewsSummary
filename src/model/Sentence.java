@@ -18,6 +18,24 @@ public class Sentence {
 	private String eventName;//事件名
 
 	
+	public Sentence(String content){
+		this.sentenceContent = content;
+	}
+	public Sentence(String content, int position){
+		this.sentenceContent = content;
+		this.locationInBody = position;
+	}
+	public Sentence(String content, int positionInBody, int positionInPara){
+		this.sentenceContent = content;
+		this.locationInBody = positionInBody;
+		this.locationInPara = positionInPara;
+	}
+	
+	public Sentence(){
+		
+	}
+	
+	
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("sentenceId:"+sentenceId);
