@@ -38,7 +38,7 @@
 		<property name="password">
 			<value>123iop</value>
 		</property>
-		<property name="maxIdleTime">
+		<property name="maxIdle">
 			<value>20</value>
 		</property>
 	</bean>

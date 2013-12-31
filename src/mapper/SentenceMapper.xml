@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.SentenceMapper">
-	<select id="getSentenceById" parameterType="int" resultType="source.Sentence">
+	<select id="getSentenceById" parameterType="int" resultType="Sentence">
 		select id, sentence_id as sentenceId, sentence_content as sentenceContent , docName, eventName, isSummary , total from sentence where id = #{id}
 	</select>
 	
-	<select id="getSentenceBySentenceIdAndDocName" resultType="source.Sentence">
+	<select id="getSentenceBySentenceIdAndDocName" resultType="Sentence">
 		select id, sentence_id as sentenceId, sentence_content as sentenceContent , docName, eventName, isSummary , total from sentence where sentence_id = #{sentenceId} and docName =#{docName}
 	</select>
 	
-	<select id="getAllSentences" resultType="source.Sentence">
+	<select id="getAllSentences" resultType="Sentence">
 		select id, sentence_id as sentenceId, sentence_content as sentenceContent , docName, eventName, isSummary , total from sentence
 	</select>
 </mapper>
