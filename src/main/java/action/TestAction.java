@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import service.SentenceService;
-import service.TFIDFSummaryService;
+import service.tfidf.TFIDFSummaryService;
 
 @Controller
 public class TestAction {

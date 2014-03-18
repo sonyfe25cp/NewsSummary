@@ -12,7 +12,7 @@ import features.RelevanceFeature;
 import features.SurfaceFeature;
 
 /**
- *
+ * 合并特征
  * @author Chen Jie
  * @date 15 Mar, 2014
  */

@@ -1,5 +1,6 @@
 package features;
 
+import model.Sentence;
 
 /**
  * centroidUni centroidBi sigTermUni sigTermBi freqWordUni freqWordBi
@@ -7,14 +8,12 @@ package features;
  * @author coder
  * 
  */
-public class ContentFeature implements FeatureCompute {
+public class ContentFeature implements FeatureCompute<Sentence> {
 
-	@Override
-	public double[] compute(Object d) {
-		
-		return new double[0];
-	}
+    @Override
+    public double[] compute(Sentence d) {
 
-	
+        return new double[0];
+    }
 
 }

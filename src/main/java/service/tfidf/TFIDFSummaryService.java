@@ -1,4 +1,4 @@
-package service;
+package service.tfidf;
 import org.springframework.stereotype.Service;
 @Service
 public class TFIDFSummaryService {
