@@ -8,3 +8,4 @@ WebContent/WEB-INF/classes/
 # Package Files #
 *.war
 *.ear
+target/
