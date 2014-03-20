@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.tac.TacSentenceMapper">
+	<select id="findByEventname" parameterType="String" resultType="TacSentence">
+		select * from tac_sentence where eventName = #{eventName}
+	</select>
+
+	<select id="findByDocName" parameterType="String" resultType="TacSentence">
+		select * from tac_sentence where docName = #{docName}
+	</select>
+
+	<select id="findById" parameterType="int" resultType="TacSentence">
+		select * from tac_sentence where id = #{id}
+	</select>
+
+	<select id="findByEventNameAndIsSummary" resultType="TacSentence">
+		select * from tac_sentence where eventName = #{eventName} and isSummary =
+		#{isSummary}
+	</select>
+
+</mapper>

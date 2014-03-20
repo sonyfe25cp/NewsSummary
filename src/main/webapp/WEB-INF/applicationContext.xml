@@ -28,7 +28,7 @@
 		</property>
 		<!-- 确定连接数据库的url -->
 		<property name="url">
-			<value>jdbc:mysql://localhost:3306/gossip</value>
+			<value>jdbc:mysql://localhost:3306/supersummary</value>
 		</property>
 		<!--确定连接数据库的用户名 -->
 		<property name="username">
@@ -38,13 +38,7 @@
 		<property name="password">
 			<value>123iop</value>
 		</property>
-		<property name="maxIdle">
-			<value>20</value>
-		</property>
 	</bean>
-
-<context:property-placeholder location="classpath*:gossip-server.properties" />
-
 
 	<!-- 由spring管理mybatis的事物 -->
 	<bean id="transactionManager"
