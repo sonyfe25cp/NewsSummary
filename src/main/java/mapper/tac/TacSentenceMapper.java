@@ -19,4 +19,9 @@ public interface TacSentenceMapper {
 	public List<String> findEvents();
 	
 	public List<String> findDocumentsByEventname(String eventName);
+	
+	public List<TacSentence> findAllSentences();
+
+	public void update(TacSentence sentence);
+
 }

@@ -18,8 +18,14 @@ public class TacSentence {
 	private String publishDate;// 发布时间
 	private int total;
 	private String headline;
-	private Map<String, Integer> TF; //词
+	private Map<String, Integer> TF; // 词
 
+	private double aging;
+	private double importance;
+	private double novelty;
+	private double length;
+//	private double 
+	
 	/**
 	 * @return the id
 	 */
@@ -49,7 +55,6 @@ public class TacSentence {
 	public void setSentenceId(int sentenceId) {
 		this.sentenceId = sentenceId;
 	}
-
 
 	public String getContent() {
 		return content;
@@ -134,6 +139,47 @@ public class TacSentence {
 
 	public void setTF(Map<String, Integer> tF) {
 		TF = tF;
+	}
+
+	@Override
+	public String toString() {
+		return "TacSentence [id=" + id + ", sentenceId=" + sentenceId
+				+ ", content=" + content + ", docName=" + docName
+				+ ", eventName=" + eventName + ", isSummary=" + isSummary
+				+ ", publishDate=" + publishDate + ", total=" + total
+				+ ", headline=" + headline + ", TF=" + TF + "]";
+	}
+
+	public double getAging() {
+		return aging;
+	}
+
+	public void setAging(double aging) {
+		this.aging = aging;
+	}
+
+	public double getImportance() {
+		return importance;
+	}
+
+	public void setImportance(double importance) {
+		this.importance = importance;
+	}
+
+	public double getNovelty() {
+		return novelty;
+	}
+
+	public void setNovelty(double novelty) {
+		this.novelty = novelty;
+	}
+
+	public double getLength() {
+		return length;
+	}
+
+	public void setLength(double length) {
+		this.length = length;
 	}
 
 }

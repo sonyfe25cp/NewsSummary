@@ -10,7 +10,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 public class Service {
 
-	SqlSession session;
+	protected SqlSession session;
 
 	public Service() {
 		getSqlSession();
@@ -22,13 +22,15 @@ public class Service {
 		InputStream inputStream;
 		try {
 			inputStream = Resources.getResourceAsStream(resource);
-			sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+			sqlSessionFactory = new SqlSessionFactoryBuilder()
+					.build(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		this.session = sqlSessionFactory.openSession();
 	}
-	public void commit(){
+
+	public void commit() {
 		session.commit();
 	}
 }

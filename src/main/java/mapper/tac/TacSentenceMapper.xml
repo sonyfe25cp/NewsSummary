@@ -18,5 +18,18 @@
 		select * from tac_sentence where eventName = #{eventName} and isSummary =
 		#{isSummary}
 	</select>
+	
+	<select id="findEvents" resultType="String">
+		select eventName from tac_sentence group by eventName
+	</select>
 
+	<select id="findDocumentsByEventname" resultType="String" parameterType="String">
+		select distinct docName from tac_sentence where eventName = #{eventName}
+	</select>
+	<select id="findAllSentences" resultType="TacSentence">
+		select * from tac_sentence
+	</select>
+	<update id="update" parameterType="TacSentence">
+		update tac_sentence set publishDate = #{publishDate} where id = #{id}
+	</update>
 </mapper>
