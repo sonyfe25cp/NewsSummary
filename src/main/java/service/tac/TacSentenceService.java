@@ -320,5 +320,13 @@ public class TacSentenceService extends Service {
 		this.beta = beta;
 	}
 
+	//各种表面特征
+	public void computeSurfaceFeatures(List<TacSentence> sentences) {
+		for(TacSentence sentence : sentences){
+			sentence.setLength(sentence.getContent().length());
+		}
+		
+	}
+
 	
 }

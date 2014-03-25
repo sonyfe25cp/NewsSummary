@@ -110,6 +110,9 @@ public class AMLMain {
 				rightCount ++;
 			}
 			//得到今天所有句子的特征
+			
+			sentenceService.computeSurfaceFeatures(sentences);
+			
 			//加入到svm进行训练
 			//得到model
 			

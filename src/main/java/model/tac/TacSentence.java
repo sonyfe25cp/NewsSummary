@@ -23,6 +23,8 @@ public class TacSentence {
 	private double aging;
 	private double importance;
 	private double novelty;
+	
+	//surfaceFeature 长度，句子id
 	private double length;
 //	private double 
 	
