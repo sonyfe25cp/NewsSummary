@@ -25,15 +25,20 @@ public class DatePrepare {
 			String docName = sentence.getDocName();
 			try {
 				String date = docName.substring(0, docName.indexOf("."))
-						.substring(8);//3 or 8
+						.substring(3);//3 or 8
 				Date d = df.parse(date);
 				String nd = df2.format(d);
 				System.out.println(nd);
 				sentence.setPublishDate(nd);
 				tacSentenceService.update(sentence);
 			} catch (ParseException e) {
-				System.err.println(docName);
-				continue;
+//				String date = docName.substring(0, docName.indexOf("."))
+//						.substring(8);//3 or 8
+//				Date d = df.parse(date);
+//				String nd = df2.format(d);
+//				System.out.println(nd);
+//				sentence.setPublishDate(nd);
+//				tacSentenceService.update(sentence);
 			}
 		}
 	}

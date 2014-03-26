@@ -18,6 +18,7 @@ import model.tac.TacSentence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import tac.Evaluation;
 import Jama.Matrix;
 
 public class AMLMain {
@@ -42,9 +43,29 @@ public class AMLMain {
 	}
 	private void runAll(){
 		List<String> events = sentenceService.findEvents();
+		List<Evaluation> evas = new ArrayList<>();
+		int errorCount = 0;
 		for(String event : events){
-			runAML(event);
+			Evaluation eva = runAML(event);
+			if(eva != null){
+				evas.add(eva);
+			}else{
+				logger.error("event : {} 没有标注结果", event);
+				errorCount++;
+			}
 		}
+		logger.info("公布最后的结果: 数据总共 {} 个， 无效数据为{}个", events.size(), errorCount);
+		double recallTotal = 0;
+		double preTotal = 0;
+		double fTotal = 0;
+		for(Evaluation eva : evas){
+			logger.info(eva.toString());
+			recallTotal += eva.getRecall();
+			preTotal += eva.getPrecise();
+			fTotal += eva.getfValue();
+		}
+		logger.info("平均值：recall: {}, precise: {}", (double)recallTotal/evas.size(), (double) preTotal/evas.size());
+		logger.info("fValue : {}", (double) fTotal/evas.size());
 	}
 	
 	/**
@@ -75,8 +96,9 @@ public class AMLMain {
 	
 	private TacSentenceService sentenceService = new TacSentenceService();
 	
-	private void runAML(String eventName){
-		logger.info("事件名称 {}", eventName);
+	private Evaluation runAML(String eventName){
+		int top = 1;
+		logger.info("事件名称 {}, 预计每天选择 {} 个摘要句", eventName, top);
 		List<TacSentence> sentencesSameEvent = sentenceService.getSentencesSameEvent(eventName);//同一个事件的句子
 		logger.info("该事件有 {} 个句子", sentencesSameEvent.size());
 		Map<String, Double> wordsIDF = sentenceService.compuateLocalIDFFromSentences(sentencesSameEvent);//该事件内的idf
@@ -86,6 +108,7 @@ public class AMLMain {
 		int i = 0;
 		Map<String, Double> energyLast = new HashMap<>();
 		List<TacSentence> summarySentencesLast = new LinkedList<>();
+		List<TacSentence> summaryThisEvent = new LinkedList<>();
 		for(Entry<String, List<TacSentence>> entry : sentenceSameDay.entrySet()){
 			String date = entry.getKey();
 			List<TacSentence> sentences = entry.getValue();
@@ -124,7 +147,7 @@ public class AMLMain {
 //			}
 			//如果只看aging部分的摘要选择
 			List<TacSentence> summarySentencesToday = new LinkedList<>();
-			int top = 3 > sentences.size() ? sentences.size() : 3;
+			top = top > sentences.size() ? sentences.size() : top;
 			for(int tmp = 0; tmp < top; tmp++){
 				TacSentence summary = sentences.get(tmp);
 				logger.info("句子：{}， aging值：{}", summary.getContent(), summary.getAging());
@@ -134,6 +157,7 @@ public class AMLMain {
 				}
 				summarySentencesToday.add(summary);
 			}
+			summaryThisEvent.addAll(summarySentencesToday);
 			//得到今天所有句子的特征
 			
 			sentenceService.computeSurfaceFeatures(sentences);
@@ -148,10 +172,12 @@ public class AMLMain {
 			
 			writerSMOTEFeaturesToFile(sentences);
 			
+			
 			//加入到svm进行训练
 			//得到model
 			
 		}
+		return Evaluation.evaluate(sentencesSameEvent, summaryThisEvent);
 	}
 	
 	private void writerSMOTEFeaturesToFile(List<TacSentence> sentences){
