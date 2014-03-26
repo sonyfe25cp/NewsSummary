@@ -328,5 +328,56 @@ public class TacSentenceService extends Service {
 		
 	}
 
+	public void computeNoveltyFeatures(List<TacSentence> sentences,
+			List<TacSentence> summarySentencesLast) {
+		for(TacSentence sentence : sentences){
+			if(summarySentencesLast == null || summarySentencesLast.size() == 0){
+				sentence.setNovelty(1);
+			}else{
+				double dis = 0;
+				for(TacSentence summary : summarySentencesLast){
+					dis += JaccardSim(sentence, summary);
+				}
+				double novelty = 1 - dis > 0 ? (1 - dis) : 0;//保证新鲜度>=0；当有句子完全重复的时候会出现负数.
+//				double novelty = 1 - dis ;
+				sentence.setNovelty(novelty);
+//				logger.info("句子id:{}, 新鲜度：{}", sentence.getId(), novelty);
+//				if(novelty <= 0){
+//					logger.error("原句{}, 新鲜度:{} 新鲜度为负数，不科学！ ----------------------------------", sentence.getId(), novelty);
+//					logger.error("原句:{}",sentence.getContent());
+//					for(TacSentence summary : summarySentencesLast){
+//						logger.error("摘要：{}",summary);
+//					}
+////					System.exit(0);
+//				}
+			}
+		}
+		
+	}
+
+	private double JaccardSim(TacSentence sentence, TacSentence summary) {
+		Set<String> wordsCount = new HashSet<>(sentence.getTF().keySet());
+		wordsCount.addAll(summary.getTF().keySet());
+		int union = wordsCount.size();
+		int jiao = sentence.getTF().size() + summary.getTF().size() - union ;
+		double res = (double)jiao/union;
+		return res;
+	}
+
+	public void computeImportanceFeatures(List<TacSentence> sentences,
+			Map<String, Double> wordsIDF) {
+		for(TacSentence sentence : sentences){
+			double weight = 0;
+			for(Entry<String, Integer> entry : sentence.getTF().entrySet()){
+				String word = entry.getKey();
+				int count = entry.getValue();
+				double tmp = count * wordsIDF.get(word);
+				weight += tmp;
+			}
+			sentence.setImportance(weight);
+		}
+		
+	}
+
 	
 }

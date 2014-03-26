@@ -28,6 +28,19 @@ public class TacSentence {
 	private double length;
 //	private double 
 	
+	public TacSentence(TacSentence tacSentence, TacSentence tacSentence2) {
+		TacSentence newSentence = new TacSentence();
+		newSentence.setAging((tacSentence.getAging() + tacSentence2.getAging() )/2);
+		newSentence.setImportance((tacSentence.getImportance() + tacSentence2.getImportance() )/2);
+		newSentence.setNovelty((tacSentence.getNovelty() + tacSentence2.getNovelty() )/2);
+		newSentence.setLength((tacSentence.getLength() + tacSentence2.getLength() )/2);
+		newSentence.setSentenceId((tacSentence.getSentenceId() + tacSentence2.getSentenceId() )/2);
+	}
+
+	public TacSentence() {
+		super();
+	}
+
 	/**
 	 * @return the id
 	 */

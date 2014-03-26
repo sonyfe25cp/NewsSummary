@@ -1,8 +1,14 @@
 package service.tac;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -26,11 +32,24 @@ public class AMLMain {
 //		amm.runAML(eventName);
 //	}
 	
+//	public static void main(String[] args) {
+//		AMLMain amm = new AMLMain();
+//		amm.runForTuningPara();
+//	}
 	public static void main(String[] args) {
 		AMLMain amm = new AMLMain();
-		amm.runForTuningPara();
+		amm.runAll();
+	}
+	private void runAll(){
+		List<String> events = sentenceService.findEvents();
+		for(String event : events){
+			runAML(event);
+		}
 	}
 	
+	/**
+	 * 调参数用 
+	 */
 	int rightCount = 0;
 	private void runForTuningPara(){
 		List<String> events = sentenceService.findEvents();
@@ -66,6 +85,7 @@ public class AMLMain {
 		logger.info("该事件的时间宽度为 {} 天",sentenceSameDay.size());
 		int i = 0;
 		Map<String, Double> energyLast = new HashMap<>();
+		List<TacSentence> summarySentencesLast = new LinkedList<>();
 		for(Entry<String, List<TacSentence>> entry : sentenceSameDay.entrySet()){
 			String date = entry.getKey();
 			List<TacSentence> sentences = entry.getValue();
@@ -103,21 +123,91 @@ public class AMLMain {
 //				logger.info("句子：{}， aging值：{}", sentence.getContent(), sentence.getAging());
 //			}
 			//如果只看aging部分的摘要选择
-			TacSentence summary = sentences.get(0);
-			logger.info("句子：{}， aging值：{}", summary.getContent(), summary.getAging());
-			if(summary.isSummary()){
-				logger.info("*********该句子是标注的摘要句!*********");
-				rightCount ++;
+			List<TacSentence> summarySentencesToday = new LinkedList<>();
+			int top = 3 > sentences.size() ? sentences.size() : 3;
+			for(int tmp = 0; tmp < top; tmp++){
+				TacSentence summary = sentences.get(tmp);
+				logger.info("句子：{}， aging值：{}", summary.getContent(), summary.getAging());
+				if(summary.isSummary()){
+					logger.info("*********该句子是标注的摘要句!*********");
+					rightCount ++;
+				}
+				summarySentencesToday.add(summary);
 			}
 			//得到今天所有句子的特征
 			
 			sentenceService.computeSurfaceFeatures(sentences);
+			
+			sentenceService.computeNoveltyFeatures(sentences, summarySentencesLast);//计算今天的句子与昨天的摘要的距离
+			summarySentencesLast = summarySentencesToday;//把摘要延续到下一天
+			
+			sentenceService.computeImportanceFeatures(sentences, wordsIDF);
+			
+			String output = "/tmp/features.txt";
+			writeFeaturesToFile(sentences, output);
+			
+			writerSMOTEFeaturesToFile(sentences);
 			
 			//加入到svm进行训练
 			//得到model
 			
 		}
 	}
+	
+	private void writerSMOTEFeaturesToFile(List<TacSentence> sentences){
+		String output = "/tmp/features-s.txt";
+		List<TacSentence> positive = new ArrayList<>();
+		List<TacSentence> negtive = new ArrayList<>();
+		for(TacSentence sentence : sentences){
+			if(sentence.isSummary()){
+				positive.add(sentence);
+			}else{
+				negtive.add(sentence);
+			}
+		}
+		
+		for(int run = 0; run < positive.size(); run = run + 2){
+			TacSentence newSentence = new TacSentence(sentences.get(run), sentences.get(run+1));
+			sentences.add(newSentence);
+		}
+		writeFeaturesToFile(sentences, output);
+	}
+	
+	private void writeFeaturesToFile(List<TacSentence> sentences, String output){
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(output), true));
+			for(TacSentence sentence : sentences){
+				StringBuilder sb = new StringBuilder();
+				sb.append(sentence.isSummary() ? 1 : -1);
+				sb.append(" ");
+				sb.append("1:");
+				sb.append(sentence.getAging());
+				sb.append(" ");
+				sb.append("2:");
+				sb.append(sentence.getImportance());
+				sb.append(" ");
+				sb.append("3:");
+				sb.append(sentence.getNovelty());
+				sb.append(" ");
+				sb.append("4:");
+				sb.append(sentence.getLength());
+				sb.append(" ");
+				sb.append("5:");
+				sb.append(sentence.getSentenceId());
+				String line = sb.toString();
+				bw.write(line);
+				bw.write("\n");
+			}
+			bw.flush();
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 	class CountMapper {
 		private Map<String, Integer> countMap = new HashMap<String, Integer>();;
 		int num = -1;
@@ -132,13 +222,5 @@ public class AMLMain {
 			return num;
 		}
 	}
-	private double computeEnergy(TacSentence sentence){//计算某个句子的能量值
-		//1.先算TFIDF
-		//2.然后算当天的营养值
-		//3.昨天的能量减掉衰减值
-		//4.剩余能量+营养值
-		return 0;
-	}
-	
 	
 }
