@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.pub.PubSentenceMapper">
+
+	<insert id="insert" parameterType="PubSentence">
+		insert into pub_sentence(sentenceId, content, docName, eventName, publishDate, total, isSummary) 
+			values(#{sentenceId}, #{content}, #{docName}, #{eventName}, #{publishDate}, #{total}, #{isSummary})
+	</insert>
+
+	<!-- 
+	<select id="findByEventname" parameterType="String" resultType="PubSentence">
+		select * from pub_sentence where eventName = #{eventName}
+	</select>
+	 -->
+	<select id="findByEventnameNoSummary" parameterType="String" resultType="PubSentence">
+		select * from pub_sentence where eventName = #{eventName} and isSummary = false
+	</select>
+
+	<select id="findByDocName" parameterType="String" resultType="PubSentence">
+		select * from pub_sentence where docName = #{docName}
+	</select>
+
+	<select id="findById" parameterType="int" resultType="PubSentence">
+		select * from pub_sentence where id = #{id}
+	</select>
+
+	<select id="findByEventNameAndIsSummary" resultType="PubSentence">
+		select * from pub_sentence where eventName = #{eventName} and isSummary = #{isSummary}
+	</select>
+
+	<select id="findDocumentsByEventname" resultType="String" parameterType="String">
+		select distinct docName from pub_sentence where eventName = #{eventName}
+	</select>
+
+	<select id="findAllSentences" resultType="PubSentence">
+		select * from pub_sentence
+	</select>
+
+	<update id="update" parameterType="PubSentence">
+		update pub_sentence set publishDate = #{publishDate} where id = #{id}
+	</update>
+
+	<select id="findEvents" resultType="String">
+		select eventName from pub_sentence group by eventName
+	</select>
+	
+	<select id="findSentencesLabeledEvent" parameterType="String" resultType="PubSentence">
+		select * from pub_sentence where eventName = #{eventName} and isSummary = true
+	</select>
+</mapper>

@@ -4,10 +4,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import model.pub.PubSentence;
 import model.tac.TacSentence;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import service.pub.PubSentenceService;
 
 public class Evaluation {
 	private double recall;
@@ -35,6 +38,33 @@ public class Evaluation {
 			}
 		}
 		double recall = (double) count / manualLabel.size();
+		double precise = (double) count / summaries.size();
+		double fValue = (double) (2 * recall * precise) / (recall + precise);
+		return new Evaluation(recall, precise, fValue);
+	}
+	/**
+	 * pub数据集的标准对照方式不一样
+	 * @param labeled
+	 * @param summaries
+	 * @return
+	 */
+	public static Evaluation evaluateSummary(List<PubSentence> labeled,
+			List<PubSentence> summaries) {
+		if(labeled.size() == 0 ){
+			logger.error("这个没有标注啊！");
+			return null;
+		}
+		int count = 0;
+		for (PubSentence summary : summaries) {
+			for(PubSentence label : labeled){
+				double sim = PubSentenceService.JaccardSim(summary, label);
+				logger.info("手工摘要跟自动摘要的相似度：{}", sim);
+				if(sim > 0.8){
+					count ++;
+				}
+			}
+		}
+		double recall = (double) count / labeled.size();
 		double precise = (double) count / summaries.size();
 		double fValue = (double) (2 * recall * precise) / (recall + precise);
 		return new Evaluation(recall, precise, fValue);

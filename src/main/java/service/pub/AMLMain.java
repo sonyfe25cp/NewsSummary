@@ -1,4 +1,4 @@
-package service.tac;
+package service.pub;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import model.tac.TacSentence;
+import model.pub.PubSentence;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,24 +94,24 @@ public class AMLMain {
 		}
 	}
 	
-	private TacSentenceService sentenceService = new TacSentenceService();
+	private PubSentenceService sentenceService = new PubSentenceService();
 	
 	private Evaluation runAML(String eventName){
 		int top = 1;//每天选择的摘要个数
 		logger.info("事件名称 {}, 预计每天选择 {} 个摘要句", eventName, top);
-		List<TacSentence> sentencesSameEvent = sentenceService.getSentencesSameEvent(eventName);//同一个事件的句子
+		List<PubSentence> sentencesSameEvent = sentenceService.getSentencesSameEvent(eventName);//同一个事件的句子
 		logger.info("该事件有 {} 个句子", sentencesSameEvent.size());
 		Map<String, Double> wordsIDF = sentenceService.compuateLocalIDFFromSentences(sentencesSameEvent);//该事件内的idf
 		logger.info("该事件有 {} 个词", wordsIDF.size());
-		Map<String, List<TacSentence>> sentenceSameDay = sentenceService.groupSentenceByDate(sentencesSameEvent);//同一个事件的句子按照时间分组
+		Map<String, List<PubSentence>> sentenceSameDay = sentenceService.groupSentenceByDate(sentencesSameEvent);//同一个事件的句子按照时间分组
 		logger.info("该事件的时间宽度为 {} 天",sentenceSameDay.size());
 		int i = 0;
 		Map<String, Double> energyLast = new HashMap<>();
-		List<TacSentence> summarySentencesLast = new LinkedList<>();
-		List<TacSentence> summaryThisEvent = new LinkedList<>();
-		for(Entry<String, List<TacSentence>> entry : sentenceSameDay.entrySet()){
+		List<PubSentence> summarySentencesLast = new LinkedList<>();
+		List<PubSentence> summaryThisEvent = new LinkedList<>();
+		for(Entry<String, List<PubSentence>> entry : sentenceSameDay.entrySet()){
 			String date = entry.getKey();
-			List<TacSentence> sentences = entry.getValue();
+			List<PubSentence> sentences = entry.getValue();
 			logger.info("开始计算 {} 的摘要, 句子数: {}", date, sentences.size());
 			CountMapper cm = new CountMapper();
 			Matrix sentenceMatrix = sentenceService.constructLSAMatrix(sentences, wordsIDF, cm);//构造当天的矩阵
@@ -131,9 +131,9 @@ public class AMLMain {
 			
 			sentenceService.computeAgingFeature(wordsWeightToday, sentences);
 			//按照大小排序
-			Collections.sort(sentences, new Comparator<TacSentence>(){
+			Collections.sort(sentences, new Comparator<PubSentence>(){
 				@Override
-				public int compare(TacSentence o1, TacSentence o2) {
+				public int compare(PubSentence o1, PubSentence o2) {
 					if(o2.getAging() > o1.getAging()){
 						return 1;
 					}else{
@@ -141,15 +141,15 @@ public class AMLMain {
 					}
 				}
 			});
-//			for(TacSentence sentence : sentences){
+//			for(PubSentence sentence : sentences){
 //				logger.info("句子编号：{}， aging值：{}", sentence.getId(), sentence.getAging());
 //				logger.info("句子：{}， aging值：{}", sentence.getContent(), sentence.getAging());
 //			}
 			//如果只看aging部分的摘要选择
-			List<TacSentence> summarySentencesToday = new LinkedList<>();
+			List<PubSentence> summarySentencesToday = new LinkedList<>();
 			top = top > sentences.size() ? sentences.size() : top;
 			for(int tmp = 0; tmp < top; tmp++){
-				TacSentence summary = sentences.get(tmp);
+				PubSentence summary = sentences.get(tmp);
 				logger.info("句子：{}， aging值：{}", summary.getContent(), summary.getAging());
 				if(summary.isSummary()){
 					logger.info("*********该句子是标注的摘要句!*********");
@@ -177,14 +177,15 @@ public class AMLMain {
 			//得到model
 			
 		}
-		return Evaluation.evaluate(sentencesSameEvent, summaryThisEvent);
+		List<PubSentence> labeledSentence = sentenceService.getSentencesLabeledEvent(eventName);
+		return Evaluation.evaluateSummary(labeledSentence, summaryThisEvent);
 	}
 	
-	private void writerSMOTEFeaturesToFile(List<TacSentence> sentences){
+	private void writerSMOTEFeaturesToFile(List<PubSentence> sentences){
 		String output = "/tmp/features-s.txt";
-		List<TacSentence> positive = new ArrayList<>();
-		List<TacSentence> negtive = new ArrayList<>();
-		for(TacSentence sentence : sentences){
+		List<PubSentence> positive = new ArrayList<>();
+		List<PubSentence> negtive = new ArrayList<>();
+		for(PubSentence sentence : sentences){
 			if(sentence.isSummary()){
 				positive.add(sentence);
 			}else{
@@ -193,16 +194,16 @@ public class AMLMain {
 		}
 		
 		for(int run = 0; run < positive.size(); run = run + 2){
-			TacSentence newSentence = new TacSentence(sentences.get(run), sentences.get(run+1));
+			PubSentence newSentence = new PubSentence(sentences.get(run), sentences.get(run+1));
 			sentences.add(newSentence);
 		}
 		writeFeaturesToFile(sentences, output);
 	}
 	
-	private void writeFeaturesToFile(List<TacSentence> sentences, String output){
+	private void writeFeaturesToFile(List<PubSentence> sentences, String output){
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(output), true));
-			for(TacSentence sentence : sentences){
+			for(PubSentence sentence : sentences){
 				StringBuilder sb = new StringBuilder();
 				sb.append(sentence.isSummary() ? 1 : -1);
 				sb.append(" ");
@@ -227,7 +228,6 @@ public class AMLMain {
 			bw.flush();
 			bw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
