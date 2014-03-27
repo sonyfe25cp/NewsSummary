@@ -398,7 +398,13 @@ public class PubSentenceService extends Service {
 	}
 
 	public List<PubSentence> getSentencesLabeledEvent(String eventName) {
-		return sentenceMapper.findSentencesLabeledEvent(eventName);
+		List<PubSentence> sentences = sentenceMapper.findSentencesLabeledEvent(eventName);
+		for (PubSentence sentence : sentences) {
+			String content = sentence.getContent();
+			Map<String, Integer> words = TokenizerUtils.tokenizerMap(content);
+			sentence.setTF(words);
+		}
+		return sentences;
 	}
 
 }
