@@ -1,0 +1,3 @@
+#! /bin/sh
+
+nohup java -Xmx7g -Xms7g -Dfile.encoding=utf8 -cp parser-1.0-SNAPSHOT-jar-with-dependencies.jar cn.techwolf.tools.ComputeIDF > idf.log 2>&1 &
