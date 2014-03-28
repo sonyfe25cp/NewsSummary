@@ -1,5 +1,6 @@
 *.class
 .classpath
+mybatis.xml
 bin/
 .settings/
 train.data.model
