@@ -45,6 +45,7 @@ public class AMLMain {
 		List<String> events = sentenceService.findEvents();
 		List<Evaluation> evas = new ArrayList<>();
 		int errorCount = 0;
+		
 		for(String event : events){
 			Evaluation eva = runAML(event);
 			if(eva != null){
@@ -76,6 +77,7 @@ public class AMLMain {
 		List<String> events = sentenceService.findEvents();
 		int max = 0;
 		int runs = 0;
+		
 		for(double alpha = 0.001, beta = 0.001; alpha < 1.5 && beta < 1.5; alpha=alpha+0.005, beta = beta+0.005){
 			rightCount = 0;
 			for(String event : events){
