@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import service.Service;
-import service.pub.AMLMain.CountMapper;
 import tac.TokenizerUtils;
 import utils.MatrixUtils;
 import Jama.Matrix;
@@ -176,7 +175,7 @@ public class PubSentenceService extends Service {
 	// }
 	// 自己写的方法
 	private Matrix constructMatrix(List<PubSentence> sentences,
-			Map<String, Double> wordsIDF, CountMapper cm) {
+			Map<String, Double> wordsIDF, service.pub.CountMapper cm) {
 		logger.info("构造 行数：{}， 列数:{} 的TFIDF矩阵", sentences.size(),
 				wordsIDF.size());
 		Matrix matrix = new Matrix(wordsIDF.size(), sentences.size()); // 行为词，列为句子
