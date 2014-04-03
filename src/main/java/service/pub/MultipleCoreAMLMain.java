@@ -38,7 +38,7 @@ public class MultipleCoreAMLMain {
 		int errorCount = 0;
 		int threads = Runtime.getRuntime().availableProcessors();
         ThreadPoolExecutor executor = new ThreadPoolExecutor(threads, threads, 1,
-                TimeUnit.DAYS, new ArrayBlockingQueue<Runnable>(threads * 48),
+                TimeUnit.DAYS, new ArrayBlockingQueue<Runnable>(threads * 2),
                 new ThreadPoolExecutor.CallerRunsPolicy());
 
 		for(String event : events){
@@ -94,7 +94,6 @@ public class MultipleCoreAMLMain {
 	private PubSentenceService sentenceService = new PubSentenceService();
 	
 	class Worker implements Runnable{
-//		PubSentenceService sentenceService = new PubSentenceService();
 		String eventName;
 		Vector<Evaluation> evas;
 		public Worker(String eventName, Vector<Evaluation> evas){
