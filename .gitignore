@@ -5,6 +5,7 @@ bin/
 .settings/
 train.data.model
 WebContent/WEB-INF/classes/
+*.log
 
 # Package Files #
 *.war
