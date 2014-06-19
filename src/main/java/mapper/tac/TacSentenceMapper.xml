@@ -15,8 +15,7 @@
 	</select>
 
 	<select id="findByEventNameAndIsSummary" resultType="TacSentence">
-		select * from tac_sentence where eventName = #{eventName} and isSummary =
-		#{isSummary}
+		select * from tac_sentence where eventName = #{eventName} and isSummary = #{isSummary}
 	</select>
 	
 	<select id="findEvents" resultType="String">

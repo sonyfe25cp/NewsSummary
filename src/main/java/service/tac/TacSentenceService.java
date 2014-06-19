@@ -114,10 +114,16 @@ public class TacSentenceService extends Service {
 
 	public List<TacSentence> getSentencesSameEvent(String eventName) {
 		List<TacSentence> sentences = sentenceMapper.findByEventname(eventName);
-		for (TacSentence sentence : sentences) {
-			String content = sentence.getContent();
-			Map<String, Integer> words = TokenizerUtils.tokenizerMap(content);
-			sentence.setTF(words);
+		if(sentences != null && sentences.size() > 0){
+			for (TacSentence sentence : sentences) {
+				String content = sentence.getContent();
+				if(content != null && content.length() > 0){
+					Map<String, Integer> words = TokenizerUtils.tokenizerMap(content);
+					sentence.setTF(words);
+				}else{
+					logger.error("eventName : {}, some sentence  is null", eventName);
+				}
+			}
 		}
 		return sentences;
 	}
