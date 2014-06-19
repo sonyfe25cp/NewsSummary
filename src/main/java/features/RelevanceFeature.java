@@ -3,8 +3,7 @@
 //import java.util.HashSet;
 //
 //import model.Sentence;
-//import service.SentenceService;
-//import utils.TokenizerUtils;
+//import tac.TokenizerUtils;
 //
 //public class RelevanceFeature implements FeatureCompute {
 //
