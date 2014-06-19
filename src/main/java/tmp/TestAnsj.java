@@ -1,11 +1,5 @@
 package tmp;
 
-import java.util.List;
-
-import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.BaseAnalysis;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
